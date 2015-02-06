@@ -49,16 +49,14 @@
 		<jar jarfile="${jar.name}">
 			<manifest>
 				<attribute name="Main-Class" value="org.wikipathways.indexer.WikiPathwaysIndexer"/>
-				<attribute name="Class-Path" value="${class.path.manifest}"/>
 			</manifest>
 			<fileset dir="${build.dir}" includes="**/*.class"/>
 		</jar>
 		<jar jarfile="${service.jar.name}">
 			<manifest>
 				<attribute name="Main-Class" value="org.wikipathways.indexer.Server"/>
-				<attribute name="Class-Path" value="${class.path.manifest}"/>
 			</manifest>
-			<fileset dir="${build.dir}" includes="**/*.class"/>
+			<fileset dir="${build.dir}" includes="**/*"/>
 		</jar>
 	</target>
 
