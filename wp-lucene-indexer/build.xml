@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<project name="GPML Indexer" default="jar" basedir=".">
+	<property name="src.dir" value="src"/>
+	<property name="build.dir" value="build"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="dist.dir" value="dist"/>
+	<property name="jar.name" value="wikipathways-indexer.jar"/>
+	<property name="service.jar.name" value="wikipathways-indexer-service.jar"/>
+	
+	<path id="class.path">
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="prepare">
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+	</target>
+
+	<target name="clean" description="Remove all generated files.">
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+		<delete file="${jar.name}"/>
+		<delete file="${service.jar.name}"/>
+	</target>
+
+	<target name="compile" depends="prepare" description="Compile sources">
+		<javac srcdir="${src.dir}"
+			   includes="**"
+			   destdir="${build.dir}"
+			   debug="true"
+			   source="1.6">
+			<classpath refid="class.path"/>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile" description="Generates executable jar file">
+		<unjar src="lib/args4j-2.0.21.jar" dest="${build.dir}"/>
+		<unjar src="lib/derby.jar" dest="${build.dir}"/>
+		<unjar src="lib/javax.xml.rpc-3.1.2.jar" dest="${build.dir}"/>
+		<unjar src="lib/lucene-core-2.4.1.jar" dest="${build.dir}"/>
+		<unjar src="lib/org.bridgedb.rdb.construct.jar" dest="${build.dir}"/>
+		<unjar src="lib/org.bridgedb.rdb.jar" dest="${build.dir}"/>
+		<unjar src="lib/org.restlet.ext.xml.jar" dest="${build.dir}"/>
+		<unjar src="lib/org.restlet.jar" dest="${build.dir}"/>
+		<unjar src="lib/org.wikipathways.client.lib.jar" dest="${build.dir}"/>
+		
+		<jar jarfile="${jar.name}">
+			<manifest>
+				<attribute name="Main-Class" value="org.wikipathways.indexer.WikiPathwaysIndexer"/>
+				<attribute name="Class-Path" value="${class.path.manifest}"/>
+			</manifest>
+			<fileset dir="${build.dir}" includes="**/*.class"/>
+		</jar>
+		<jar jarfile="${service.jar.name}">
+			<manifest>
+				<attribute name="Main-Class" value="org.wikipathways.indexer.Server"/>
+				<attribute name="Class-Path" value="${class.path.manifest}"/>
+			</manifest>
+			<fileset dir="${build.dir}" includes="**/*.class"/>
+		</jar>
+	</target>
+
+	<target name="dist" depends="jar" description="Copies jar and external libraries to dist path">
+		<copy file="${jar.name}" toDir="${dist.dir}"/>
+		<copy file="${service.jar.name}" toDir="${dist.dir}"/>
+		<copy file="bridge.config" toDir="${dist.dir}"/>
+		<copy file="indexer.config" toDir="${dist.dir}"/>
+		<delete file="${jar.name}"/>
+		<delete file="${service.jar.name}"/>
+	</target>
+</project>
