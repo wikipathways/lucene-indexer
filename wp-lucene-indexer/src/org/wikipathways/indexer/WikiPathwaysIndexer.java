@@ -103,7 +103,7 @@ public class WikiPathwaysIndexer extends Timer{
 
 	private void init() throws ServiceException, ConverterException {
 		wikiCache = new WikiPathwaysCache(
-				new WikiPathwaysClient(rpcUrl),
+				rpcUrl,
 				cachePath
 		);
 		List<File> files = FileUtils.getFiles(cachePath, "gpml", true);
