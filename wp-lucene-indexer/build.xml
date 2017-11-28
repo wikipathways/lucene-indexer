@@ -44,7 +44,7 @@
 		<unjar src="lib/org.bridgedb.rdb.jar" dest="${build.dir}"/>
 		<unjar src="lib/org.restlet.ext.xml.jar" dest="${build.dir}"/>
 		<unjar src="lib/org.restlet.jar" dest="${build.dir}"/>
-		<unjar src="lib/org.wikipathways.webservice.api.lib-3.2.2.jar" dest="${build.dir}"/>
+		<unjar src="lib/org.wikipathways.webservice.api.lib.jar" dest="${build.dir}"/>
 		
 		<jar jarfile="${jar.name}">
 			<manifest>
